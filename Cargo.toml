@@ -1,0 +1,11 @@
+[package]
+name = "parser_of_logic_expressions"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "A brief description of your crate"
+
+[dependencies]
+pest = "2.8.3"
+pest_derive = "2.8.3"
+
