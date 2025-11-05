@@ -3,4 +3,6 @@ use pest_derive::Parser;
 
 #[derive(Parser)]
 #[grammar = "grammar.pest"]
-pub struct Parser;
+pub struct LogicParser;
+
+
