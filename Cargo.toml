@@ -3,11 +3,13 @@ name = "parser_of_logic_expressions"
 version = "0.1.0"
 edition = "2024"
 license = "MIT"
-description = "Parser for logical expressions"
+description = "Parser for propositional logic expressions"
+readme = "README.md"
 
 [dependencies]
 anyhow = "1.0.100"
 pest = "2.8.3"
 pest_derive = "2.8.3"
 thiserror = "2.0.17"
+
 

@@ -1,3 +1,13 @@
-WHITESPACE = _{ " " | "\t" | "\n" | "\r" }
-atom = @{ 'a'..'z' | 'A'..'Z' ~ ('a'..'z' | 'A'..'Z' | '0'..'9')* }
-expression = { SOI ~ atom ~ EOI }
+COMMENT = _{ "//" ~ (!NEWLINE ~ ANY)* }
+WHITESPACE = _{ " " | NEWLINE}
+
+atom = @{ (^"true" | ^"false") | (('a'..'z' | 'A'..'Z') ~ (('a'..'z' | 'A'..'Z') | '0'..'9' | "_")*) }
+primary = { atom | "(" ~ expression ~ ")" | "[" ~ expression ~ "]" | "{" ~ expression ~ "}" }
+negation = { "!"* ~ primary }
+and = { negation ~ (("&" | "↑") ~ negation)* }
+xor = { and ~ ("^" ~ and)* }
+or  = { xor ~ ("|" ~ xor)* }
+implication = { or ~ ("->" ~ implication)? }
+
+expression = { implication ~ ("<->" ~ implication)* }
+file = { SOI ~ (expression)* ~ EOI }

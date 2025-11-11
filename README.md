@@ -1,9 +1,15 @@
-### Logic_parse
+# parser_of_logic_expressions
+parser_of_logic_expressions — a simple parser for propositional logic expressions.
 
-Logic_parse - це парсер для виразів логіки числення висловлювань, як от (a & (b -> c)).
+The project reads lines with expressions (one expression per line), builds a syntactic tree, and can output a simplified, bracketed form of the expression.
 
-Після парсингу з виразом можна зробити 2 дії: 1) вивести синтаксичний розбір виразу, 2) перетворити його в диз'юнктивну або кон'юктивну нормальну форму
+## Technical description of parsing
+Input: one or more text lines with logical expressions. Supported are atoms (names, true/false), parentheses `()`, `[]`, `{}`, unary negation `!`, binary operators `&`, `|`, `^`, `↑`, `->`, `<->` with defined priorities.
+The parser is implemented using `pest`. The grammar rules are described in `src/grammar.pest` and include the following rules: `atom`, `primary`, `negation`, `and`, `xor`, `or`, `implication`, `expression`, `file`.
 
-### Example
+After parsing, the code can output a parse tree or perform a simple transformation — construct a left-sided parenthesized form of the expression for reading.
 
-a & (b -> c) => (a & !b) | (a & c)
+## How to use
+The command `parse <FILE_PATH>` outputs a parse tree for each expression in the file.
+
+The command `make_parantecies <IN_PATH> <OUT_PATH>` reads the input file and writes to the output file the strings with the parenthesized form of each expression.
