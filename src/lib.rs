@@ -1,17 +1,4 @@
-//! Simple parser for propositional logic expressions.
-//!
-//! This crate provides a parser for propositional (boolean) logic expressions
-//! such as `a & (b -> c)`. The grammar recognizes literals (atoms),
-//! grouping with parentheses or brackets, negation, and binary operators
-//! with precedence: AND, XOR, OR, IMPLICATION, EQUIVALENCE.
-//!
-//! Grammar rules (high level):
-//! - `atom` — identifiers and boolean literals (true/false)
-//! - `primary` — `atom` or grouped expressions `( ... )`, `[ ... ]`, `{ ... }`
-//! - `negation` — zero or more `!` followed by a `primary`
-//! - `and` — `negation` chained with `&` or `↑`
-//! - `xor`, `or`, `implication`, `expression` — composed with appropriate precedence
-//! - `file` — multiple `expression` separated by newlines
+#![doc = include_str!("../docs.md")]
 
 use pest::iterators::Pair;
 use pest_derive::Parser;
@@ -25,7 +12,6 @@ pub struct LogicParser;
 /// Library-level errors.
 #[derive(Error, Debug)]
 pub enum LogicError {
-    /// Generic parse or processing error.
     #[error("parse error: {0}")]
     Parse(String),
 }
