@@ -31,3 +31,41 @@ implication = { or ~ ("->" ~ implication)? }
 expression = { implication ~ ("<->" ~ implication)* }
 file = { SOI ~ (expression)* ~ EOI }
 ```
+
+### Rules of procedure
+
+`COMMENT = _{ "//" ~ (!NEWLINE ~ ANY)* }`
+A comment starts with `"//"`, followed by any sequence of characters (`ANY`) until the end of the line (`!NEWLINE`).
+
+`WHITESPACE = _{ " " | NEWLINE }`
+Denotes spaces (`" "`) or a newline character between elements of an expression, essentially defining the gaps between symbols in an expression or the transition to the next expression.
+
+### Expression Rules:
+The order of rules in this category defines the precedence of operations.
+
+`atom = @{ (^"true" | ^"false") | IDENT }`
+An atom is the simplest unit of an expression. It can be a boolean literal (`true` or `false` in various cases) or an identifier (`IDENT`), which denotes a variable.
+
+`primary = { atom | "(" ~ expression ~ ")" }`
+A primary expression can be either an `atom`, or any `expression` enclosed in parentheses.
+
+`negation = { "!"* ~ primary }`
+Negation (`NOT`) consists of zero or more exclamation marks (`"!"`), followed by a `primary` expression.
+
+`and = { negation ~ (("&" | "↑") ~ negation)* }`
+Combines conjunction (`AND`) and Peirce's arrow (`NAND`). It consists of a `negation`, followed by zero or more repetitions of the AND operator (`"&"`) or the NAND operator (`"↑"`), each of which must be accompanied by another `negation` (i.e., an expression from higher precedence rules).
+
+`xor = { and ~ ("^" ~ and)* }`
+Exclusive OR (`XOR`) consists of `and`, followed by zero or more repetitions of the XOR operator (`"^"`), each of which must be accompanied by another `and`.
+
+`or = { xor ~ ("|" ~ xor)* }`
+Disjunction (`OR`) consists of `xor`, followed by zero or more repetitions of the OR operator (`"|"`), each of which must be accompanied by another `xor`.
+
+`implication = { or ~ ("->" ~ implication)* }`
+Implication (`Implies`) consists of `or`, followed by zero or more implication operators (`"->"`), each of which is accompanied by another `implication`. This structure typically indicates a right-associative order of execution for the `->` operator.
+
+`expression = { implication ~ ("<->" ~ implication)* }`
+The general expression consists of `implication`, followed by zero or more equivalence operators (`Bi-implies`, `<->`), each of which is accompanied by another `implication`.
+
+`file = { SOI ~ (expression)* ~ EOI }`
+This rule describes the structure of the entire input file. It starts with `SOI` (Start Of Input), may contain zero or more complete `expression`'s, and ends with `EOI` (End Of Input).
